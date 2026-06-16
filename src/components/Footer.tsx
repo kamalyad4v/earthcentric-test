@@ -105,7 +105,7 @@ export default function Footer() {
                 🌱 Thank you! You've joined the EarthCentric community.
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
                 <Input
                   type="email"
                   placeholder="Enter email address"
@@ -114,7 +114,8 @@ export default function Footer() {
                   required
                   className="bg-background flex-1"
                 />
-                <Button type="submit" variant="cool" className="px-4">
+                <Button type="submit" variant="cool" className="whitespace-nowrap flex items-center justify-center space-x-2">
+                  <span>Subscribe</span>
                   <Mail className="h-4 w-4" />
                 </Button>
               </form>
@@ -126,8 +127,8 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 text-xs text-muted-foreground gap-4">
           <p>© {new Date().getFullYear()} EarthCentric Marketplace. Carbon-Neutral Platform.</p>
           <div className="flex space-x-6">
-            <Link href="/" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
             <Link href="/#how-it-works" className="hover:text-foreground transition-colors flex items-center space-x-1">
               <HelpCircle className="h-3 w-3" />
               <span>How Verification Works</span>

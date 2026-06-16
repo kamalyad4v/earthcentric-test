@@ -28,7 +28,8 @@ const defaultGlobeConfig = {
     { top: "25%", left: "50%", scale: 0.75 },  // Section 2: Credentials (Center top, compact)
     { top: "22%", left: "85%", scale: 1.7 },   // Section 3: Categories (Right edge, larger)
     { top: "50%", left: "50%", scale: 1.6 },   // Section 4: Verification (Center, backdrop)
-    { top: "70%", left: "75%", scale: 1.1 },   // Section 5: Mission / CTA (Right bottom, subtle)
+    { top: "35%", left: "20%", scale: 1.25 },  // Section 5: Testimonials (Left side, medium scale)
+    { top: "70%", left: "75%", scale: 1.1 },   // Section 6: Mission / CTA (Right bottom, subtle)
   ]
 };
 
@@ -206,6 +207,7 @@ export default function ScrollGlobe({ sections, globeConfig = defaultGlobeConfig
         {sections.map((section, index) => (
           <div
             key={section.id}
+            id={section.id}
             ref={(el) => { sectionRefs.current[index] = el; }}
             className="w-full relative z-20"
           >

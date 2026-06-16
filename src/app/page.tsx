@@ -1,11 +1,11 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button, Card, Badge, LiquidButton, MetalButton } from "@/components/ui/shared";
 import { FadeIn, FadeInStagger, FadeInStaggerItem, ScaleHover } from "@/components/FramerComponents";
-import { ShieldCheck, Award, Leaf, ArrowRight, ArrowUpRight, RefreshCw, ChevronRight } from "lucide-react";
+import { ShieldCheck, Award, Leaf, ArrowRight, ArrowUpRight, RefreshCw, ChevronRight, Star, MessageSquare } from "lucide-react";
 import DisplayCards from "@/components/ui/display-cards";
 import ScrollGlobe from "@/components/ui/scroll-globe";
 
@@ -112,8 +112,29 @@ const SUSTAINABILITY_DATA = [
 
 function AnimatedCounter({ value, isDecimal = false, suffix = "" }: { value: number; isDecimal?: boolean; suffix?: string }) {
   const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const elementRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasAnimated) return;
+
     const duration = 1500;
     const steps = 60;
     const stepTime = duration / steps;
@@ -133,9 +154,14 @@ function AnimatedCounter({ value, isDecimal = false, suffix = "" }: { value: num
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [value, isDecimal]);
+  }, [value, isDecimal, hasAnimated]);
 
-  return <span className="tabular-nums">{isDecimal ? count.toFixed(1) : count.toLocaleString()}{suffix}</span>;
+  return (
+    <span ref={elementRef} className="tabular-nums">
+      {isDecimal ? count.toFixed(1) : count.toLocaleString()}
+      {suffix}
+    </span>
+  );
 }
 
 export default function Homepage() {
@@ -278,6 +304,34 @@ export default function Homepage() {
                   price: "₹249",
                   image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=400",
                   badge: "88 Eco Score"
+                },
+                {
+                  name: "Zero-Waste Solid Shampoo Bar",
+                  category: "Zero-Waste Living",
+                  price: "₹299",
+                  image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400",
+                  badge: "96 Eco Score"
+                },
+                {
+                  name: "Hemp Fiber Laptop Sleeve",
+                  category: "Organic Apparel",
+                  price: "₹949",
+                  image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=400",
+                  badge: "91 Eco Score"
+                },
+                {
+                  name: "Upcycled Coconut Shell Bowls (Set of 2)",
+                  category: "Eco Home Goods",
+                  price: "₹399",
+                  image: "https://images.unsplash.com/photo-1533038590840-1cde6b66b706?w=400",
+                  badge: "94 Eco Score"
+                },
+                {
+                  name: "Portable Solar Cooker",
+                  category: "Renewable Energy",
+                  price: "₹4,499",
+                  image: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=400",
+                  badge: "97 Eco Score"
                 }
               ].map((item, idx) => (
                 <div 
@@ -490,10 +544,10 @@ export default function Homepage() {
       )
     },
     {
-      id: "verification",
+      id: "how-it-works",
       badge: "Verification",
       content: (
-        <section id="how-it-works" className="w-full bg-primary py-16 md:py-24 text-white rounded-2xl md:rounded-3xl mx-auto max-w-7xl overflow-hidden px-5 sm:px-6 lg:px-12 my-8 md:my-12">
+        <section className="w-full bg-primary py-16 md:py-24 text-white rounded-2xl md:rounded-3xl mx-auto max-w-7xl overflow-hidden px-5 sm:px-6 lg:px-12 my-8 md:my-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <Badge className="bg-accent/20 text-accent border-accent/20">The Trust Standard</Badge>
@@ -534,6 +588,90 @@ export default function Homepage() {
               />
               <div className="absolute inset-0 bg-primary/20" />
             </div>
+          </div>
+        </section>
+      )
+    },
+    {
+      id: "testimonials",
+      badge: "Testimonials",
+      content: (
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 md:py-36 space-y-12">
+          <div className="text-center space-y-2 max-w-xl mx-auto">
+            <div className="inline-flex items-center space-x-1.5 rounded-full bg-accent/20 border border-accent/30 px-3 py-1 text-[10px] font-bold text-primary uppercase tracking-wider">
+              <MessageSquare className="h-3 w-3 text-emerald-600 animate-pulse" />
+              <span>Social Proof &amp; Impact</span>
+            </div>
+            <h2 className="text-3xl font-extrabold text-primary tracking-tight sm:text-4xl">
+              Trusted by Eco Conscious Partners
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              See how verified brands, manufacturers, and buyers are changing the world with EarthCentric.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+            {[
+              {
+                quote: "Finding verified suppliers who actually possess genuine GOTS and FSC certifications used to take us weeks. EarthCentric has streamlined our entire supply chain verification down to minutes.",
+                author: "Elena Rostova",
+                role: "Sustainability Director, Veda Goods",
+                location: "Germany",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120",
+                impact: "Saved 4.2 Tons CO₂",
+                rating: 5,
+              },
+              {
+                quote: "The transparency is unmatched. Being able to see the exact eco audit logs and GST registrations of suppliers before placing bulk orders has completely eliminated greenwashing risks for our retail brand.",
+                author: "Marcus Chen",
+                role: "Founder, Loop Apparel",
+                location: "USA",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+                impact: "Reduced 840 kg Plastic",
+                rating: 5,
+              },
+              {
+                quote: "As a small-scale ethical manufacturer in India, getting noticed was incredibly hard. EarthCentric's verification badge gave us immediate trust and connected us with international buyers looking for organic cotton.",
+                author: "Ananya Iyer",
+                role: "Managing Director, EarthCraft Exports",
+                location: "India",
+                avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120",
+                impact: "100% Upcycled Sourcing",
+                rating: 5,
+              }
+            ].map((t, idx) => (
+              <div 
+                key={idx}
+                className="glass-card bg-card border border-border/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+              >
+                <div className="space-y-4">
+                  {/* Rating Stars */}
+                  <div className="flex items-center space-x-1">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-amber-400 stroke-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-sm italic text-muted-foreground leading-relaxed">
+                    "{t.quote}"
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-4 border-t border-[#d0c6b8]/20 pt-4">
+                  <img 
+                    src={t.avatar} 
+                    alt={t.author} 
+                    className="h-10 w-10 rounded-full object-cover ring-2 ring-emerald-600/10"
+                  />
+                  <div className="text-left">
+                    <h4 className="text-sm font-bold text-primary leading-tight">{t.author}</h4>
+                    <p className="text-[10px] text-muted-foreground">{t.role} ({t.location})</p>
+                    <div className="inline-flex items-center space-x-1 mt-1 bg-emerald-600/10 rounded-full px-2 py-0.5 text-[8px] font-extrabold text-emerald-700 uppercase tracking-wide">
+                      <span>{t.impact}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       )
